@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "vue": "^3.4.29"
@@ -19,6 +20,8 @@
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-vue": "^9.27.0",
     "globals": "^15.8.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.7",
     "prettier": "^3.3.2",
     "stylelint": "^16.6.1",
     "stylelint-config-recommended-vue": "^1.5.0",
