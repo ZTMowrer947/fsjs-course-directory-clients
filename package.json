@@ -1,63 +1,21 @@
 {
-  "name": "react-coursedir",
+  "name": "coursedir",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0-pre",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "lint:eslint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "lint:prettier": "prettier --write **/*.{ts,tsx}",
-    "lint:css": "stylelint '**/*.css'",
-    "lint": "pnpm lint:eslint --fix && pnpm lint:prettier && pnpm lint:css",
-    "preview": "vite preview",
-    "prepare": "husky install",
-    "test": "vitest"
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.3.4",
-    "@tanstack/react-query": "^5.17.15",
-    "js-cookie": "^3.0.5",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.50.0",
-    "react-router-dom": "^6.21.2",
-    "yup": "^1.3.3"
+    "vue": "^3.4.29"
   },
   "devDependencies": {
-    "@faker-js/faker": "^8.3.1",
-    "@mswjs/data": "^0.16.1",
-    "@testing-library/cypress": "^10.0.1",
-    "@types/js-cookie": "^3.0.6",
-    "@types/react": "^18.2.47",
-    "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
-    "@vitejs/plugin-react-swc": "^3.5.0",
-    "cypress": "^13.6.6",
-    "eslint": "^8.56.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-chai-friendly": "^0.7.4",
-    "eslint-plugin-cypress": "^2.15.1",
-    "eslint-plugin-import": "^2.29.1",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.5",
-    "eslint-plugin-simple-import-sort": "^10.0.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^15.2.0",
-    "msw": "^2.0.14",
-    "prettier": "^3.2.1",
-    "stylelint": "^16.1.0",
-    "stylelint-config-standard": "^36.0.0",
-    "typescript": "~5.3.3",
-    "vite": "^5.0.12",
-    "vite-tsconfig-paths": "^4.3.1",
-    "vitest": "^1.2.0"
+    "@vitejs/plugin-vue": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1",
+    "vue-tsc": "^2.0.21"
   },
-  "msw": {
-    "workerDirectory": "public"
-  }
+  "packageManager": "pnpm@9.4.0+sha512.f549b8a52c9d2b8536762f99c0722205efc5af913e77835dbccc3b0b0b2ca9e7dc8022b78062c17291c48e88749c70ce88eb5a74f1fa8c4bf5e18bb46c8bd83a"
 }
