@@ -20,6 +20,7 @@
     "@faker-js/faker": "^8.4.1",
     "@testing-library/cypress": "^10.0.2",
     "@vitejs/plugin-vue": "^5.0.5",
+    "@vitejs/plugin-vue-jsx": "^4.0.0",
     "autoprefixer": "^10.4.19",
     "cypress": "^13.13.0",
     "eslint": "9.x",

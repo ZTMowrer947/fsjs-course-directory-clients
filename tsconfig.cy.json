@@ -2,7 +2,15 @@
   "compilerOptions": {
     "paths": {
       "~/*": ["./src/*"]
-    }
+    },
+    "jsx": "react-jsxdev",
+    "jsxImportSource": "vue",
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "lib": ["ESNext", "DOM"]
   },
   "include": ["cypress/**/*"]
 }
