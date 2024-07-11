@@ -13,11 +13,9 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
-// Import commands.js using ES2015 syntax:
 import './commands';
+import '~/style.css';
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
 import { mount } from 'cypress/vue';
 import { createMemoryHistory, createRouter } from 'vue-router';
 
