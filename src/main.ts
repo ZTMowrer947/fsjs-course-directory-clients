@@ -1,5 +1,6 @@
 import './style.css';
 
+import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createApp } from 'vue';
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 
@@ -25,4 +26,4 @@ const router = createRouter({
   routes,
 });
 
-createApp(App).use(router).mount('#app');
+createApp(App).use(VueQueryPlugin).use(router).mount('#app');
