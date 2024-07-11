@@ -21,6 +21,8 @@ describe('ListItem component', () => {
     // Find title in component
     cy.findByText(course.title);
 
-    // TODO: Ensure item links to correct place based on ID
+    // Ensure item links to correct place based on ID
+    const expectedHref = `/courses/${encodeURIComponent(course.id)}`;
+    cy.findByRole('link').should('have.attr', 'href', expectedHref);
   });
 });
