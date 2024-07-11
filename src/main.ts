@@ -2,24 +2,10 @@ import './style.css';
 
 import { VueQueryPlugin } from '@tanstack/vue-query';
 import { createApp } from 'vue';
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 
 import App from './App.vue';
-import ListPage from './routes/courses/ListPage.vue';
-
-const routes = [
-  {
-    path: '/',
-    redirect: {
-      name: 'course-list',
-    },
-  },
-  {
-    path: '/courses',
-    name: 'course-list',
-    component: ListPage,
-  },
-] satisfies readonly RouteRecordRaw[];
+import routes from './routes.ts';
 
 const router = createRouter({
   history: createWebHistory(),
