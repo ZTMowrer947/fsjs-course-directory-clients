@@ -1,8 +1,24 @@
 import { faker } from '@faker-js/faker';
+import { defineComponent, type PropType } from 'vue';
 
 import type { CoursePreview } from '~/entities/course.ts';
 import ListItem from '~/routes/courses/ListItem.vue';
 
+// Wrapper component for styling
+const ListItemTestLayout = defineComponent({
+  props: {
+    course: Object as PropType<CoursePreview>,
+  },
+  setup(props) {
+    return () => (
+      <div class="grid">
+        <ListItem course={props.course} />
+      </div>
+    );
+  },
+});
+
+// Test Suite
 describe('ListItem component', () => {
   it('renders a link and details for the provided course', () => {
     // Generate fake course
@@ -12,11 +28,7 @@ describe('ListItem component', () => {
     } satisfies CoursePreview;
 
     // Mount component
-    cy.mount(ListItem, {
-      props: {
-        course,
-      },
-    });
+    cy.mount(<ListItemTestLayout course={course} />);
 
     // Find title in component
     cy.findByText(course.title);
