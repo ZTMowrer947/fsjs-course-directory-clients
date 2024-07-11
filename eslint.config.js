@@ -1,5 +1,7 @@
 import pluginJs from '@eslint/js';
 import configPrettier from 'eslint-config-prettier';
+import pluginChaiFriendly from 'eslint-plugin-chai-friendly';
+import pluginCypress from 'eslint-plugin-cypress/flat';
 import pluginImportSort from 'eslint-plugin-simple-import-sort';
 import pluginVue from 'eslint-plugin-vue';
 import globals from 'globals';
@@ -30,5 +32,7 @@ export default tseslint.config(
       'simple-import-sort/exports': 'warn',
     },
   },
+  pluginCypress.configs.recommended,
+  pluginChaiFriendly.configs.recommendedFlat,
   configPrettier,
 );
