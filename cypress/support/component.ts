@@ -19,6 +19,9 @@ import './commands';
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 import { mount } from 'cypress/vue';
+import { createMemoryHistory, createRouter } from 'vue-router';
+
+import routes from '~/routes';
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
@@ -33,7 +36,27 @@ declare global {
   }
 }
 
-Cypress.Commands.add('mount', mount);
+Cypress.Commands.add('mount', (component, options) => {
+  // Flesh out plugins list by ensuring it is defined
+  options = options ?? {};
+  options.global = options.global ?? {};
+  options.global.plugins = options.global.plugins ?? [];
+
+  // Setup router
+  const router = createRouter({
+    routes,
+    history: createMemoryHistory(),
+  });
+
+  // Append plugin and proceed to mount component
+  options.global.plugins.push({
+    install(app) {
+      app.use(router);
+    },
+  });
+
+  return mount(component, options);
+});
 
 // Example use:
 // cy.mount(MyComponent)
