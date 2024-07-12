@@ -1,16 +1,14 @@
 <template>
   <div>
     <h1>This will be a detail page</h1>
-    <ul v-if="data">
-      <li v-for="course in data" :key="course.id">
-        {{ course.title }}
-      </li>
-    </ul>
+    <CourseList v-if="data" :courses="data" />
   </div>
 </template>
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
+
+import CourseList from './CourseList.vue';
 
 const { data } = useQuery({
   queryKey: ['courses'],
