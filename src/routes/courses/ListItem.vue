@@ -1,6 +1,6 @@
 <template>
-  <RouterLink :to>
-    <h1>{{ course.title }}</h1>
+  <RouterLink :to class="rounded-md px-5 py-8 bg-indigo-500 hover:bg-indigo-700 transition-colors">
+    <h1 class="text-white overflow-ellipsis">{{ course.title }}</h1>
   </RouterLink>
 </template>
 
