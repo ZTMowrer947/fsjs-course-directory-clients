@@ -18,8 +18,9 @@ describe('CourseList component', () => {
 
     cy.mount(<CourseList courses={courses} />);
 
-    cy.findAllByTestId('course-item').should('have.length', courseNum);
-
-    cy.findByText('Create Course');
+    cy.findAllByRole('link')
+      .should('have.length', courseNum + 1)
+      .last()
+      .should('have.attr', 'href', '/courses/new');
   });
 });
