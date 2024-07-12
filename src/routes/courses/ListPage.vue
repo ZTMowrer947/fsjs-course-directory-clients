@@ -9,13 +9,11 @@
 import { useQuery } from '@tanstack/vue-query';
 
 import CourseList from './CourseList.vue';
+import { fetchCourseList } from './queries.ts';
+import courseKeys from './queryKeys.ts';
 
 const { data } = useQuery({
-  queryKey: ['courses'],
-  queryFn: async () => {
-    const res = await fetch('http://localhost:5000/api/courses');
-
-    return res.json();
-  },
+  queryKey: courseKeys.all,
+  queryFn: fetchCourseList,
 });
 </script>
