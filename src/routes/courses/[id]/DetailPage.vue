@@ -11,7 +11,7 @@ import { useRoute } from 'vue-router';
 
 import { fetchSingleCourse } from '../queries.ts';
 import courseKeys from '../queryKeys.ts';
-import CourseDetail from './CourseDetail.vue';
+import CourseDetail from './CourseDetails.vue';
 
 const route = useRoute();
 const id = computed(() => Number.parseInt(route.params.id.toString()));
