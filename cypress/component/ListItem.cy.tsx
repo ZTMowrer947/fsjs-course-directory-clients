@@ -1,20 +1,13 @@
 import { faker } from '@faker-js/faker';
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent } from 'vue';
 
 import type { CoursePreview } from '~/entities/course.ts';
 import ListItem from '~/routes/courses/ListItem.vue';
 
 // Wrapper component for styling
-const ListItemTestLayout = defineComponent({
-  props: {
-    course: Object as PropType<CoursePreview>,
-  },
-  setup(props) {
-    return () => (
-      <div class="grid">
-        <ListItem course={props.course} />
-      </div>
-    );
+const TestLayout = defineComponent({
+  setup(_props, { slots }) {
+    return () => <div class="grid">{slots.default()}</div>;
   },
 });
 
@@ -28,7 +21,11 @@ describe('ListItem component', () => {
     } satisfies CoursePreview;
 
     // Mount component
-    cy.mount(<ListItemTestLayout course={course} />);
+    cy.mount(
+      <TestLayout>
+        <ListItem course={course} />
+      </TestLayout>,
+    );
 
     // Find title in component
     cy.findByText(course.title);
