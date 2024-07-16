@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <div>
-      <h1>{{ course.title }}</h1>
-      <h3>{{ authorText }}</h3>
+  <div class="grid grid-cols-6">
+    <div class="col-span-6">
+      <div class="mb-20">
+        <h1 class="text-4xl font-bold">{{ course.title }}</h1>
+        <h3 class="text-lg">{{ authorText }}</h3>
+      </div>
+      <MarkdownRenderer :source="course.description" />
     </div>
-    <MarkdownRenderer :source="course.description" />
   </div>
 </template>
 
