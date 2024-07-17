@@ -1,5 +1,6 @@
 import { createRouter } from 'vue-router';
 
+import SignInPage from './routes/(auth)/signin/SignInPage.vue';
 import DetailPage from './routes/courses/[id]/DetailPage.vue';
 import ListPage from './routes/courses/ListPage.vue';
 
@@ -21,6 +22,11 @@ const routes: Routes = [
     path: '/courses/:id',
     name: 'course-detail',
     component: DetailPage,
+  },
+  {
+    path: '/signin',
+    name: 'signin',
+    component: SignInPage,
   },
 ];
 
