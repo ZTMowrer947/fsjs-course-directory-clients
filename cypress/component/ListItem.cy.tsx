@@ -1,15 +1,9 @@
 import { faker } from '@faker-js/faker';
-import { defineComponent } from 'vue';
 
 import type { CoursePreview } from '~/entities/course.ts';
 import ListItem from '~/routes/courses/ListItem.vue';
 
-// Wrapper component for styling
-const TestLayout = defineComponent({
-  setup(_props, { slots }) {
-    return () => <div class="grid">{slots.default()}</div>;
-  },
-});
+import TestLayout from './TestLayout.tsx';
 
 // Test Suite
 describe('ListItem component', () => {
@@ -22,7 +16,7 @@ describe('ListItem component', () => {
 
     // Mount component
     cy.mount(
-      <TestLayout>
+      <TestLayout class="grid">
         <ListItem course={course} />
       </TestLayout>,
     );
