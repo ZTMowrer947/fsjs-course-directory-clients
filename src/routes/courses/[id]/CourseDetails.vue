@@ -7,6 +7,17 @@
       </div>
       <MarkdownRenderer :source="course.description" />
     </div>
+    <div data-testid="stats" v-if="hasStats" class="col-span-6">
+      <div v-if="course.estimatedTime">
+        <h4 class="text-lg">Estimated time</h4>
+        <h3 class="text-xl">{{ course.estimatedTime }}</h3>
+      </div>
+
+      <div v-if="course.materialsNeeded">
+        <h4 class="text-lg">Materials Needed</h4>
+        <MarkdownRenderer :source="course.materialsNeeded" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -27,4 +38,6 @@ const authorText = computed(() => {
 
   return `By ${authorName}`;
 });
+
+const hasStats = computed(() => !!props.course.estimatedTime || !!props.course.materialsNeeded);
 </script>
