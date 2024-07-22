@@ -18,10 +18,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toValue } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import type { UserSignInModel } from '~/entities/user.ts';
+
+import { getUserFromCredentials } from '../queries.ts';
 
 const formData = ref<UserSignInModel>({
   emailAddress: '',
@@ -29,6 +31,15 @@ const formData = ref<UserSignInModel>({
 });
 
 function handleSubmit() {
-  console.log(formData.value.emailAddress, formData.value.password);
+  // Test credentials
+  const credentials = toValue(formData);
+
+  getUserFromCredentials(credentials)
+    .then((result) => {
+      console.log(result ?? 'No user');
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 }
 </script>
