@@ -5,7 +5,7 @@
         <h1 class="text-4xl font-bold">{{ course.title }}</h1>
         <h3 class="text-lg">{{ authorText }}</h3>
       </div>
-      <MarkdownRenderer :source="course.description" />
+      <MarkdownRenderer class="prose" :source="course.description" />
     </div>
     <div data-testid="stats" v-if="hasStats" class="col-span-6">
       <div v-if="course.estimatedTime">
@@ -15,7 +15,7 @@
 
       <div v-if="course.materialsNeeded">
         <h4 class="text-lg">Materials Needed</h4>
-        <MarkdownRenderer :source="course.materialsNeeded" />
+        <MarkdownRenderer class="prose" :source="course.materialsNeeded" />
       </div>
     </div>
   </div>
