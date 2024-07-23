@@ -1,5 +1,8 @@
+import { inject } from 'vue';
 import { createRouter } from 'vue-router';
 
+import { credentialManagerKey } from './injectKeys';
+import { dummyCredentialManager } from './lib/credential';
 import SignInPage from './routes/(auth)/signin/SignInPage.vue';
 import DetailPage from './routes/courses/[id]/DetailPage.vue';
 import ListPage from './routes/courses/ListPage.vue';
@@ -27,6 +30,15 @@ const routes: Routes = [
     path: '/signin',
     name: 'signin',
     component: SignInPage,
+    beforeEnter(_to, _from, next) {
+      const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
+
+      if (credentialManager.get()) {
+        next({ name: 'course-list' });
+      } else {
+        next();
+      }
+    },
   },
 ];
 
