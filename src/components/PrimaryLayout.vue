@@ -1,7 +1,7 @@
 <template>
   <div>
     <PrimaryHeader :user="data ?? undefined" :auth-pending="isPending" @signout="signOut" />
-    <div class="mx-10" data-testid="main-content">
+    <div class="mx-10 mt-5" data-testid="main-content">
       <slot></slot>
     </div>
   </div>
