@@ -23,13 +23,15 @@ describe('Course list page', () => {
     cy.wait('@fetchCourses');
 
     // Query for course links
-    cy.findAllByRole('link').should(($courseLinks) => {
-      // Expect links for all courses, plus a link to create more, verify text for all of them
-      expect($courseLinks, '5 course links and add course link').to.have.length(6);
-      courses.forEach((course, index) => {
-        expect($courseLinks.get(index), `Course #${index + 1} link`).to.contain.text(course.title);
+    cy.findByTestId('main-content').within(() => {
+      cy.findAllByRole('link').should(($courseLinks) => {
+        // Expect links for all courses, plus a link to create more, verify text for all of them
+        expect($courseLinks, '5 course links and add course link').to.have.length(6);
+        courses.forEach((course, index) => {
+          expect($courseLinks.get(index), `Course #${index + 1} link`).to.contain.text(course.title);
+        });
+        expect($courseLinks.last(), 'Create course link').to.contain.text('Create Course');
       });
-      expect($courseLinks.last(), 'Create course link').to.contain.text('Create Course');
     });
   });
 });
