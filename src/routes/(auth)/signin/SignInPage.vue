@@ -59,7 +59,7 @@ import type { UserSignInModel } from '~/entities/user.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 
-import { getUserFromCredentials } from '../queries.ts';
+import { getUserFromEncodedCredentials } from '../queries.ts';
 import { userKeys } from '../queryKeys.ts';
 
 type FormStatus = 'presubmit' | 'submitting' | 'authsuccess' | 'authfail' | 'error';
@@ -80,8 +80,9 @@ function handleSubmit() {
 
   // Test credentials
   const credentials = toValue(formData);
+  const encoded = credentialManager.encode(credentials);
 
-  getUserFromCredentials(credentials)
+  getUserFromEncodedCredentials(encoded)
     .then((result) => {
       status.value = result !== null ? 'authsuccess' : 'authfail';
 
