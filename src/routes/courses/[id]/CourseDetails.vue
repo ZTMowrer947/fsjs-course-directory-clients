@@ -24,10 +24,8 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 
+import MarkdownRenderer from '~/components/MarkdownRenderer.vue';
 import type { CourseDetail } from '~/entities/course.ts';
-
-// DEBUG: Why does using ~ shorthand to access component not work?
-import MarkdownRenderer from '../../../components/MarkdownRenderer.vue';
 
 const props = defineProps<{
   course: CourseDetail;
