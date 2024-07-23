@@ -1,15 +1,15 @@
 <template>
-  <header>
-    <h1 class="text-2xl font-bold">Courses</h1>
+  <header class="bg-indigo-500 p-5 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-white">Courses</h1>
 
     <nav v-if="!authPending">
       <div v-if="user">
-        <span>Welcome {{ user.firstName }} {{ user.lastName }}!</span>
-        <button @click="handleSignout">Sign Out</button>
+        <span class="text-white">Welcome {{ user.firstName }} {{ user.lastName }}!</span>
+        <button class="text-gray-300 hover:text-white transition-colors ms-2" @click="handleSignout">Sign Out</button>
       </div>
       <div v-else>
-        <RouterLink to="/signin">Sign In</RouterLink>
-        <RouterLink to="/signup">Sign Up</RouterLink>
+        <RouterLink class="text-gray-300 hover:text-white transition-colors" to="/signin">Sign In</RouterLink>
+        <RouterLink class="text-gray-300 hover:text-white transition-colors ms-2" to="/signup">Sign Up</RouterLink>
       </div>
     </nav>
   </header>
