@@ -1,12 +1,13 @@
 <template>
-  <div>
-    <h1>This will be a detail page</h1>
+  <PrimaryLayout>
     <CourseList v-if="data" :courses="data" />
-  </div>
+  </PrimaryLayout>
 </template>
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
+
+import PrimaryLayout from '~/components/PrimaryLayout.vue';
 
 import CourseList from './CourseList.vue';
 import { fetchCourseList } from './queries.ts';

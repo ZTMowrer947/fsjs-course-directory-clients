@@ -1,13 +1,15 @@
 <template>
-  <div>
+  <PrimaryLayout>
     <CourseDetail v-if="data" :course="data" />
-  </div>
+  </PrimaryLayout>
 </template>
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
+
+import PrimaryLayout from '~/components/PrimaryLayout.vue';
 
 import { fetchSingleCourse } from '../queries.ts';
 import courseKeys from '../queryKeys.ts';
