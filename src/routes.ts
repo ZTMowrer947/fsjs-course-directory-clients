@@ -45,6 +45,15 @@ const routes: Routes = [
     path: '/signup',
     name: 'signup',
     component: SignUpPage,
+    beforeEnter(_to, _from, next) {
+      const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
+
+      if (credentialManager.get()) {
+        next({ name: 'course-list' });
+      } else {
+        next();
+      }
+    },
   },
 ];
 

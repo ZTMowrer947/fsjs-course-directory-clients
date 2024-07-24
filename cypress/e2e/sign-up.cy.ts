@@ -41,5 +41,10 @@ describe('Signup page', () => {
     cy.findByText('Sign Out');
     cy.findByText('Sign In').should('not.exist');
     cy.findByText('Sign Up').should('not.exist');
+
+    // Revisit page, expect to be redirected back immediately
+    cy.visit('/signin');
+
+    cy.url().should('match', /\/courses$/);
   });
 });
