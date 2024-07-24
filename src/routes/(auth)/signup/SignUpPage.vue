@@ -90,10 +90,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toValue } from 'vue';
-import { RouterLink } from 'vue-router';
+/* eslint @typescript-eslint/no-unused-vars: ['error', { ignoreRestSiblings: true }] */
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { inject, ref, toValue } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
 
-import type { UserSignUpModel } from '~/entities/user.ts';
+import type { UserSignInModel, UserSignUpModel } from '~/entities/user.ts';
+import { credentialManagerKey } from '~/injectKeys.ts';
+import { dummyCredentialManager } from '~/lib/credential.ts';
+
+import { createUser } from '../queries.ts';
+import { userKeys } from '../queryKeys.ts';
 
 type SignUpFormData = UserSignUpModel & {
   confirmPassword: string;
@@ -107,7 +114,32 @@ const formData = ref<SignUpFormData>({
   confirmPassword: '',
 });
 
+const router = useRouter();
+const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
+const queryClient = useQueryClient();
+const { mutate } = useMutation({
+  mutationFn: createUser,
+  onSuccess(data) {
+    // Grab password from input
+    const { password } = toValue(formData);
+
+    const credentials = {
+      emailAddress: data.emailAddress,
+      password,
+    } satisfies UserSignInModel;
+
+    // Store credentials and user data
+    credentialManager.store(credentials);
+    queryClient.setQueryData(userKeys.user, data);
+
+    // Redirect to home page
+    router.push({ name: 'course-list' });
+  },
+});
+
 function handleSubmit() {
-  console.log(toValue(formData));
+  const { confirmPassword, ...userData } = toValue(formData);
+
+  mutate(userData);
 }
 </script>
