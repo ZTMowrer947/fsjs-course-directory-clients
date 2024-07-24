@@ -1,10 +1,11 @@
 <template>
   <div class="flex flex-1 flex-col items-center justify-center">
     <form
-      class="flex flex-col border-2 border-indigo-500 rounded-lg p-5"
+      class="flex flex-col border-2 border-indigo-500 rounded-lg p-5 w-1/2 lg:w-1/3 2xl:w-1/4"
       method="post"
       @submit.prevent.stop="handleSubmit"
     >
+      <h1 class="text-2xl font-bold mb-2">Sign In</h1>
       <div class="flex flex-col">
         <label for="emailAddress">Email Address</label>
         <input
