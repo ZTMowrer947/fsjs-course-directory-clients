@@ -33,17 +33,25 @@
 
       <div class="flex w-full justify-evenly mt-10">
         <button
-          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 disabled:bg-indigo-700 transition-colors text-white rounded-lg flex-1 me-2 p-2"
+          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 disabled:bg-indigo-700 transition-colors text-white rounded-lg flex-1 me-2 p-2"
           type="submit"
           :disabled="status === 'submitting'"
         >
           Sign In
         </button>
         <RouterLink
-          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 transition-colors text-white rounded-lg flex-1 text-center p-2"
+          class="border-2 border-red-500 text-red-500 hover:border-red-700 hover:bg-red-700 hover:text-white transition-colors rounded-lg flex-1 text-center p-2"
           to="/"
         >
           Cancel
+        </RouterLink>
+      </div>
+      <div class="flex w-full justify-stretch mt-2">
+        <RouterLink
+          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 transition-colors text-white rounded-lg flex-1 text-center p-2"
+          to="/signup"
+        >
+          Don't have an account?
         </RouterLink>
       </div>
     </form>

@@ -1,5 +1,5 @@
 <template>
-  <header class="bg-indigo-500 p-5 flex justify-between items-center">
+  <header class="bg-indigo-500 py-5 px-10 flex justify-between items-center">
     <h1 class="text-2xl font-bold text-white">Courses</h1>
 
     <nav v-if="!authPending">
