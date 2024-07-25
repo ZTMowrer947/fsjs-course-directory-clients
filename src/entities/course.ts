@@ -11,3 +11,5 @@ export interface CourseDetail {
 }
 
 export type CoursePreview = Pick<CourseDetail, 'id' | 'title'>;
+
+export type CourseUpsertModel = Pick<CourseDetail, 'title' | 'description' | 'estimatedTime' | 'materialsNeeded'>;
