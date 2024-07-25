@@ -1,24 +1,24 @@
 <template>
-  <form class="w-full flex-1 grid grid-cols-1" method="post" @submit.prevent.stop="handleSubmit">
-    <div class="w-full flex flex-col">
+  <form class="w-full flex-1 grid grid-cols-12" method="post" @submit.prevent.stop="handleSubmit">
+    <div class="w-full flex flex-col col-span-12 md:col-span-6 xl:col-span-8">
       <slot name="heading"></slot>
 
-      <div class="flex flex-col">
+      <div class="flex flex-col mt-2">
         <label for="title">Course Title</label>
-        <input class="rounded-lg hover:border-indigo-700" type="text" id="title" v-model.trim="title" />
+        <input class="rounded-lg focus:border-indigo-700" type="text" id="title" v-model.trim="title" />
       </div>
 
       <div class="flex flex-col mt-2 flex-1">
         <label for="description">Course Description</label>
         <textarea
-          class="rounded-lg hover:border-indigo-700 flex-1"
+          class="rounded-lg focus:border-indigo-700 flex-1"
           id="description"
           v-model.trim="description"
         ></textarea>
       </div>
     </div>
-    <div class="w-full flex flex-col">
-      <div class="flex flex-col mt-2">
+    <div class="w-full flex flex-col col-span-12 md:col-start-8 md:xl:col-span-5 xl:col-start-10 xl:col-span-3">
+      <div class="flex flex-col mt-2 md:mt-10">
         <label for="estimatedTime">Estimated Time</label>
         <input class="rounded-lg hover:border-indigo-700" type="text" id="estimatedTime" v-model.trim="estimatedTime" />
       </div>
@@ -31,7 +31,7 @@
         ></textarea>
       </div>
     </div>
-    <div class="flex justify-start items-center">
+    <div class="flex justify-start items-center col-span-12 sm:col-span-6 lg:col-span-4 2xl:col-span-3">
       <slot name="buttons"></slot>
     </div>
   </form>
