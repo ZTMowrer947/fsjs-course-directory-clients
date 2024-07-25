@@ -1,29 +1,37 @@
 <template>
-  <form method="post" @submit.prevent.stop="handleSubmit">
-    <div>
+  <form class="w-full flex-1 grid grid-cols-1" method="post" @submit.prevent.stop="handleSubmit">
+    <div class="w-full flex flex-col">
       <slot name="heading"></slot>
 
-      <div>
+      <div class="flex flex-col">
         <label for="title">Course Title</label>
-        <input type="text" id="title" v-model.trim="title" />
+        <input class="rounded-lg hover:border-indigo-700" type="text" id="title" v-model.trim="title" />
       </div>
 
-      <div>
+      <div class="flex flex-col mt-2 flex-1">
         <label for="description">Course Description</label>
-        <textarea id="description" v-model.trim="description"></textarea>
+        <textarea
+          class="rounded-lg hover:border-indigo-700 flex-1"
+          id="description"
+          v-model.trim="description"
+        ></textarea>
       </div>
     </div>
-    <div>
-      <div>
+    <div class="w-full flex flex-col">
+      <div class="flex flex-col mt-2">
         <label for="estimatedTime">Estimated Time</label>
-        <input type="text" id="estimatedTime" v-model.trim="estimatedTime" />
+        <input class="rounded-lg hover:border-indigo-700" type="text" id="estimatedTime" v-model.trim="estimatedTime" />
       </div>
-      <div>
+      <div class="flex flex-col mt-2 flex-1">
         <label for="materialsNeeded">Materials Needed</label>
-        <textarea id="materialsNeeded" v-model.trim="materialsNeeded"></textarea>
+        <textarea
+          class="rounded-lg hover:border-indigo-700 flex-1"
+          id="materialsNeeded"
+          v-model.trim="materialsNeeded"
+        ></textarea>
       </div>
     </div>
-    <div>
+    <div class="flex justify-start items-center">
       <slot name="buttons"></slot>
     </div>
   </form>
