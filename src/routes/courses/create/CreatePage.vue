@@ -15,6 +15,7 @@
         <button
           class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 disabled:bg-indigo-700 transition-colors text-white rounded-lg flex-1 me-2 p-2"
           type="submit"
+          :disabled="isPending"
         >
           Create Course
         </button>
@@ -30,12 +31,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toValue } from 'vue';
-import { RouterLink } from 'vue-router';
+import { useMutation, useQueryClient } from '@tanstack/vue-query';
+import { inject, ref, toValue } from 'vue';
+import { RouterLink, useRouter } from 'vue-router';
 
 import CourseUpsertForm from '~/components/CourseUpsertForm.vue';
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import type { CourseUpsertModel } from '~/entities/course.ts';
+import { credentialManagerKey } from '~/injectKeys.ts';
+import { dummyCredentialManager } from '~/lib/credential.ts';
+
+import { createCourse } from '../queries.ts';
+import courseKeys from '../queryKeys.ts';
 
 const formData = ref<CourseUpsertModel>({
   title: '',
@@ -44,7 +51,37 @@ const formData = ref<CourseUpsertModel>({
   materialsNeeded: null,
 });
 
+const router = useRouter();
+const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
+const queryClient = useQueryClient();
+const { mutate, isPending } = useMutation({
+  mutationFn(data: CourseUpsertModel) {
+    // Grab current credentials
+    const encodedCredentials = credentialManager.encode(credentialManager.get()!);
+
+    return createCourse(encodedCredentials, data);
+  },
+  onSuccess(courseDetail) {
+    // Store data for new course, invalidate query for whole list
+    queryClient.setQueryData(courseKeys.byId(courseDetail.id), courseDetail);
+    queryClient.invalidateQueries({
+      queryKey: courseKeys.all,
+    });
+
+    // Redirect to new page
+    router.push({
+      name: 'course-detail',
+      params: {
+        id: courseDetail.id,
+      },
+    });
+  },
+});
+
 function handleSubmit() {
-  console.log(toValue(formData));
+  // Run mutation
+  const courseData = toValue(formData);
+
+  mutate(courseData);
 }
 </script>
