@@ -5,6 +5,7 @@
       v-model:description="formData.description"
       v-model:estimated-time="formData.estimatedTime"
       v-model:materials-needed="formData.materialsNeeded"
+      @submit="handleSubmit"
     >
       <template #heading>
         <h1>Create Course</h1>
@@ -19,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, toValue } from 'vue';
 import { RouterLink } from 'vue-router';
 
 import CourseUpsertForm from '~/components/CourseUpsertForm.vue';
@@ -32,4 +33,8 @@ const formData = ref<CourseUpsertModel>({
   estimatedTime: null,
   materialsNeeded: null,
 });
+
+function handleSubmit() {
+  console.log(toValue(formData));
+}
 </script>

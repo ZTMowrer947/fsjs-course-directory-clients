@@ -1,5 +1,5 @@
 <template>
-  <form method="post">
+  <form method="post" @submit.prevent.stop="handleSubmit">
     <div>
       <slot name="heading"></slot>
 
@@ -30,6 +30,7 @@
 </template>
 
 <script lang="ts" setup>
+// Form model setup
 const title = defineModel<string>('title', {
   required: true,
 });
@@ -55,4 +56,13 @@ const materialsNeeded = defineModel<string | null>('materialsNeeded', {
     return value === null ? '' : value;
   },
 });
+
+// Component emits
+const emit = defineEmits<{
+  submit: [];
+}>();
+
+function handleSubmit() {
+  emit('submit');
+}
 </script>
