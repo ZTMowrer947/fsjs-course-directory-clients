@@ -6,6 +6,7 @@ import { dummyCredentialManager } from './lib/credential';
 import SignInPage from './routes/(auth)/signin/SignInPage.vue';
 import SignUpPage from './routes/(auth)/signup/SignUpPage.vue';
 import DetailPage from './routes/courses/[id]/DetailPage.vue';
+import CreatePage from './routes/courses/create/CreatePage.vue';
 import ListPage from './routes/courses/ListPage.vue';
 
 type Routes = Parameters<typeof createRouter>[0]['routes'];
@@ -21,6 +22,11 @@ const routes: Routes = [
     path: '/courses',
     name: 'course-list',
     component: ListPage,
+  },
+  {
+    path: '/courses/new',
+    name: 'create-course',
+    component: CreatePage,
   },
   {
     path: '/courses/:id',
