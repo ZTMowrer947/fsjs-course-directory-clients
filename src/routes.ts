@@ -22,16 +22,25 @@ const routes: Routes = [
     path: '/courses',
     name: 'course-list',
     component: ListPage,
+    meta: {
+      requiresAuth: false,
+    },
   },
   {
     path: '/courses/new',
     name: 'create-course',
     component: CreatePage,
+    meta: {
+      requiresAuth: true,
+    },
   },
   {
     path: '/courses/:id',
     name: 'course-detail',
     component: DetailPage,
+    meta: {
+      requiresAuth: false,
+    },
   },
   {
     path: '/signin',
@@ -45,6 +54,9 @@ const routes: Routes = [
       } else {
         next();
       }
+    },
+    meta: {
+      requiresAuth: false,
     },
   },
   {
@@ -60,7 +72,16 @@ const routes: Routes = [
         next();
       }
     },
+    meta: {
+      requiresAuth: false,
+    },
   },
 ];
 
 export default routes;
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth: boolean;
+  }
+}
