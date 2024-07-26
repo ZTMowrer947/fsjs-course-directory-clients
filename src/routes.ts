@@ -5,6 +5,7 @@ import { credentialManagerKey } from './injectKeys';
 import { dummyCredentialManager } from './lib/credential';
 import SignInPage from './routes/(auth)/signin/SignInPage.vue';
 import SignUpPage from './routes/(auth)/signup/SignUpPage.vue';
+import DeletePage from './routes/courses/[id]/delete/DeletePage.vue';
 import DetailPage from './routes/courses/[id]/DetailPage.vue';
 import CreatePage from './routes/courses/create/CreatePage.vue';
 import ListPage from './routes/courses/ListPage.vue';
@@ -40,6 +41,14 @@ const routes: Routes = [
     component: DetailPage,
     meta: {
       requiresAuth: false,
+    },
+  },
+  {
+    path: '/courses/:id/delete',
+    name: 'delete-course',
+    component: DeletePage,
+    meta: {
+      requiresAuth: true,
     },
   },
   {
