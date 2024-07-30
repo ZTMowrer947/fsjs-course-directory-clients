@@ -29,9 +29,10 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { computed, inject } from 'vue';
-import { RouterLink, useRoute } from 'vue-router';
+import { RouterLink } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
+import useCourseId from '~/composables/useCourseId.ts';
 import useCourseQuery from '~/composables/useCourseQuery.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
@@ -40,8 +41,7 @@ import { userKeys } from '~/routes/(auth)/queryKeys.ts';
 
 import CourseDetail from './CourseDetails.vue';
 
-const route = useRoute();
-const id = computed(() => Number.parseInt(route.params.id.toString()));
+const id = useCourseId();
 
 const updateTo = computed(() => `/courses/${encodeURIComponent(id.value)}/update`);
 const deleteTo = computed(() => `/courses/${encodeURIComponent(id.value)}/delete`);
