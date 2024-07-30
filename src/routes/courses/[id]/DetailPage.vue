@@ -4,14 +4,14 @@
       <RouterLink
         class="bg-indigo-500 hover:bg-indigo-700 transition-colors text-white font-bold rounded-lg p-3 me-2"
         :to="updateTo"
-        v-if="course && authedUser?.id === course.userId"
+        v-if="courseQuery.data.value && authedUser?.id === courseQuery.data.value.userId"
       >
         Update Course
       </RouterLink>
       <RouterLink
         class="bg-indigo-500 hover:bg-indigo-700 transition-colors text-white font-bold rounded-lg p-3 me-2"
         :to="deleteTo"
-        v-if="course && authedUser?.id === course.userId"
+        v-if="courseQuery.data.value && authedUser?.id === courseQuery.data.value.userId"
       >
         Delete Course
       </RouterLink>
@@ -22,7 +22,7 @@
         Back to List
       </RouterLink>
     </header>
-    <CourseDetail v-if="course" :course="course" />
+    <CourseDetail v-if="courseQuery.data.value" :course="courseQuery.data.value" />
   </PrimaryLayout>
 </template>
 
@@ -32,13 +32,12 @@ import { computed, inject } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
+import useCourseQuery from '~/composables/useCourseQuery.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 import { getUserFromStoredCredentials } from '~/routes/(auth)/queries.ts';
 import { userKeys } from '~/routes/(auth)/queryKeys.ts';
 
-import { fetchSingleCourse } from '../queries.ts';
-import courseKeys from '../queryKeys.ts';
 import CourseDetail from './CourseDetails.vue';
 
 const route = useRoute();
@@ -48,10 +47,7 @@ const updateTo = computed(() => `/courses/${encodeURIComponent(id.value)}/update
 const deleteTo = computed(() => `/courses/${encodeURIComponent(id.value)}/delete`);
 
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
-const { data: course } = useQuery({
-  queryKey: courseKeys.byId(id.value),
-  queryFn: () => fetchSingleCourse(id.value),
-});
+const courseQuery = useCourseQuery(id);
 const { data: authedUser } = useQuery({
   queryKey: userKeys.user,
   queryFn: () => getUserFromStoredCredentials(credentialManager),
