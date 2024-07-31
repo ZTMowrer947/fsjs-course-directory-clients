@@ -73,7 +73,7 @@
         </button>
         <RouterLink
           class="border-2 border-red-500 text-red-500 hover:border-red-700 hover:bg-red-700 hover:text-white transition-colors rounded-lg flex-1 text-center p-2"
-          to="/courses"
+          :to="{ name: 'course-list' }"
         >
           Cancel
         </RouterLink>
@@ -81,9 +81,10 @@
       <div class="flex w-full justify-stretch mt-2">
         <RouterLink
           class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 transition-colors text-white rounded-lg flex-1 text-center p-2"
-          to="/signin"
-          >Already have an account?</RouterLink
+          :to="{ name: 'signin' }"
         >
+          Already have an account?
+        </RouterLink>
       </div>
     </form>
   </div>

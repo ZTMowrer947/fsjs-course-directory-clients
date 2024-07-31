@@ -8,8 +8,12 @@
         <button class="text-gray-300 hover:text-white transition-colors ms-2" @click="handleSignout">Sign Out</button>
       </div>
       <div v-else>
-        <RouterLink class="text-gray-300 hover:text-white transition-colors" to="/signin">Sign In</RouterLink>
-        <RouterLink class="text-gray-300 hover:text-white transition-colors ms-2" to="/signup">Sign Up</RouterLink>
+        <RouterLink class="text-gray-300 hover:text-white transition-colors" :to="{ name: 'signin' }">
+          Sign In
+        </RouterLink>
+        <RouterLink class="text-gray-300 hover:text-white transition-colors ms-2" :to="{ name: 'signup' }">
+          Sign Up
+        </RouterLink>
       </div>
     </nav>
   </header>

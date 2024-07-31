@@ -17,7 +17,7 @@
       </RouterLink>
       <RouterLink
         class="border-2 border-indigo-500 text-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 hover:text-white transition-colors font-bold rounded-lg p-2.5"
-        to="/courses"
+        :to="{ name: 'course-list' }"
       >
         Back to List
       </RouterLink>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, RouterLinkProps } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useAuthedUser from '~/composables/useAuthedUser.ts';
@@ -37,10 +37,12 @@ import useCourseQuery from '~/composables/useCourseQuery.ts';
 
 import CourseDetail from './CourseDetails.vue';
 
+type RouteLocation = RouterLinkProps['to'];
+
 const id = useCourseId();
 
-const updateTo = computed(() => `/courses/${encodeURIComponent(id.value)}/update`);
-const deleteTo = computed(() => `/courses/${encodeURIComponent(id.value)}/delete`);
+const updateTo = computed<RouteLocation>(() => ({ name: 'update-course', params: { id: id.value } }));
+const deleteTo = computed<RouteLocation>(() => ({ name: 'delete-course', params: { id: id.value } }));
 
 const courseQuery = useCourseQuery(id);
 const authedUserQuery = useAuthedUser();
