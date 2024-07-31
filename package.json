@@ -11,6 +11,7 @@
     "cy:open": "cypress open"
   },
   "dependencies": {
+    "@std/encoding": "npm:@jsr/std__encoding@^1.0.1",
     "@tanstack/vue-query": "^5.51.1",
     "js-cookie": "^3.0.5",
     "markdown-it": "^14.1.0",

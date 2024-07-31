@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@std/encoding':
+        specifier: npm:@jsr/std__encoding@^1.0.1
+        version: '@jsr/std__encoding@1.0.1'
       '@tanstack/vue-query':
         specifier: ^5.51.1
         version: 5.51.1(vue@3.4.31(typescript@5.5.3))
@@ -517,6 +520,9 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
+
+  '@jsr/std__encoding@1.0.1':
+    resolution: {integrity: sha512-Vxw8nLLVO3zpv2Pm4DfZQRzYkaxPJ+vxxMMG4Kjc+m/tCn/jDH8zE+xPRSkopkVI7ToQ8N86fm4G7tDTl7CjEA==, tarball: https://npm.jsr.io/~/11/@jsr/std__encoding/1.0.1.tgz}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -3047,6 +3053,8 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
+
+  '@jsr/std__encoding@1.0.1': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
