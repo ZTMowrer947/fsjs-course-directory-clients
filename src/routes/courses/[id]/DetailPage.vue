@@ -28,12 +28,14 @@
 
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
-import { computed } from 'vue';
+import { computed, inject } from 'vue';
 import { RouterLink, RouterLinkProps } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
-import useAuthedUser from '~/composables/useAuthedUser.ts';
 import useCourseId from '~/composables/useCourseId.ts';
+import { credentialManagerKey } from '~/injectKeys.ts';
+import { dummyCredentialManager } from '~/lib/credential.ts';
+import { authedUserQueryOpts } from '~/routes/(auth)/queries/byStored.ts';
 
 import singleCourseQueryOpts from '../queries/single.ts';
 import CourseDetail from './CourseDetails.vue';
@@ -45,8 +47,9 @@ const id = useCourseId();
 const updateTo = computed<RouteLocation>(() => ({ name: 'update-course', params: { id: id.value } }));
 const deleteTo = computed<RouteLocation>(() => ({ name: 'delete-course', params: { id: id.value } }));
 
+const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const courseQuery = useQuery(singleCourseQueryOpts(id.value));
-const authedUserQuery = useAuthedUser();
+const authedUserQuery = useQuery(authedUserQueryOpts(credentialManager));
 </script>
 
 <style scoped>

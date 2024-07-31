@@ -13,16 +13,13 @@ import { inject } from 'vue';
 
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
-import { getUserFromStoredCredentials } from '~/routes/(auth)/queries.ts';
+import { authedUserQueryOpts } from '~/routes/(auth)/queries/byStored.ts';
 import { userKeys } from '~/routes/(auth)/queryKeys.ts';
 
 import PrimaryHeader from './PrimaryHeader.vue';
 
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
-const { data, isPending } = useQuery({
-  queryKey: userKeys.user,
-  queryFn: () => getUserFromStoredCredentials(credentialManager),
-});
+const { data, isPending } = useQuery(authedUserQueryOpts(credentialManager));
 const queryClient = useQueryClient();
 
 function signOut() {

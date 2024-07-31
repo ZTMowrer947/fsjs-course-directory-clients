@@ -68,7 +68,7 @@ import type { UserSignInModel } from '~/entities/user.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 
-import { getUserFromEncodedCredentials } from '../queries.ts';
+import { getUserFromEncodedCredentials } from '../queries/byEncoded.ts';
 import { userKeys } from '../queryKeys.ts';
 
 type FormStatus = 'presubmit' | 'submitting' | 'authsuccess' | 'authfail' | 'error';
