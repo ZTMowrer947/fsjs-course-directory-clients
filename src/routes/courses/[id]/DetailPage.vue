@@ -27,14 +27,15 @@
 </template>
 
 <script setup lang="ts">
+import { useQuery } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import { RouterLink, RouterLinkProps } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useAuthedUser from '~/composables/useAuthedUser.ts';
 import useCourseId from '~/composables/useCourseId.ts';
-import useCourseQuery from '~/composables/useCourseQuery.ts';
 
+import singleCourseQueryOpts from '../queries/single.ts';
 import CourseDetail from './CourseDetails.vue';
 
 type RouteLocation = RouterLinkProps['to'];
@@ -44,7 +45,7 @@ const id = useCourseId();
 const updateTo = computed<RouteLocation>(() => ({ name: 'update-course', params: { id: id.value } }));
 const deleteTo = computed<RouteLocation>(() => ({ name: 'delete-course', params: { id: id.value } }));
 
-const courseQuery = useCourseQuery(id);
+const courseQuery = useQuery(singleCourseQueryOpts(id.value));
 const authedUserQuery = useAuthedUser();
 </script>
 
