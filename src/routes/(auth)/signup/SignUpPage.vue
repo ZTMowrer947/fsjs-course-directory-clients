@@ -15,7 +15,7 @@
           id="firstName"
           placeholder="John"
           required
-          v-model="formData.firstName"
+          v-model.trim="formData.firstName"
         />
       </div>
 
@@ -27,7 +27,7 @@
           id="lastName"
           placeholder="Doe"
           required
-          v-model="formData.lastName"
+          v-model.trim="formData.lastName"
         />
       </div>
 
@@ -38,7 +38,7 @@
           type="email"
           id="emailAddress"
           placeholder="john.doe@example.tld"
-          v-model="formData.emailAddress"
+          v-model.trim="formData.emailAddress"
         />
       </div>
 
@@ -49,7 +49,7 @@
           type="password"
           id="password"
           placeholder="johnpassword"
-          v-model="formData.password"
+          v-model.trim="formData.password"
         />
       </div>
 
@@ -60,7 +60,7 @@
           type="password"
           id="confirmPassword"
           placeholder="Re-type password..."
-          v-model="formData.confirmPassword"
+          v-model.trim="formData.confirmPassword"
         />
       </div>
 

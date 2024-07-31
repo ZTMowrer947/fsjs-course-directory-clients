@@ -13,7 +13,7 @@
           type="email"
           id="emailAddress"
           placeholder="test@example.com"
-          v-model="formData.emailAddress"
+          v-model.trim="formData.emailAddress"
         />
       </div>
       <div class="flex flex-col mt-2">
@@ -24,7 +24,7 @@
           id="password"
           placeholder="password123"
           required
-          v-model="formData.password"
+          v-model.trim="formData.password"
         />
       </div>
 
