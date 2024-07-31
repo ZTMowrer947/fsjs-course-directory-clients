@@ -1,6 +1,6 @@
 <template>
   <PrimaryLayout>
-    <CourseList v-if="data" :courses="data" />
+    <CourseList v-if="courseListQuery.data.value" :courses="courseListQuery.data.value" />
   </PrimaryLayout>
 </template>
 
@@ -10,11 +10,7 @@ import { useQuery } from '@tanstack/vue-query';
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 
 import CourseList from './CourseList.vue';
-import { fetchCourseList } from './queries.ts';
-import courseKeys from './queryKeys.ts';
+import allCoursesQueryOpts from './queries/all.ts';
 
-const { data } = useQuery({
-  queryKey: courseKeys.all,
-  queryFn: fetchCourseList,
-});
+const courseListQuery = useQuery(allCoursesQueryOpts);
 </script>

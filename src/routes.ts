@@ -11,8 +11,7 @@ import DetailPage from './routes/courses/[id]/DetailPage.vue';
 import UpdatePage from './routes/courses/[id]/update/UpdatePage.vue';
 import CreatePage from './routes/courses/create/CreatePage.vue';
 import ListPage from './routes/courses/ListPage.vue';
-import { fetchSingleCourse } from './routes/courses/queries.ts';
-import courseKeys from './routes/courses/queryKeys.ts';
+import singleCourseQueryOpts from './routes/courses/queries/single.ts';
 
 type Routes = Parameters<typeof createRouter>[0]['routes'];
 
@@ -46,10 +45,7 @@ const routes: Routes = [
       const id = Number.parseInt(to.params.id.toString(), 10);
       const queryClient = useQueryClient();
 
-      const course = await queryClient.ensureQueryData({
-        queryKey: courseKeys.byId(id),
-        queryFn: ({ queryKey }) => fetchSingleCourse(queryKey[1]),
-      });
+      const course = await queryClient.ensureQueryData(singleCourseQueryOpts(id));
 
       // Abort navigation if course is not found
       if (!course) {
