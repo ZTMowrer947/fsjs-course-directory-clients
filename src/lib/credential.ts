@@ -1,3 +1,4 @@
+import { decodeBase64, encodeBase64 } from '@std/encoding/base64';
 import Cookies from 'js-cookie';
 
 import type { UserSignInModel } from '~/entities/user.ts';
@@ -56,11 +57,14 @@ export class CookieCredentialManager implements ICredentialManager {
   }
 
   public encode(credentials: UserSignInModel): string {
-    return btoa(`${credentials.emailAddress}:${credentials.password}`);
+    const encoded = new TextEncoder().encode(`${credentials.emailAddress}:${credentials.password}`);
+
+    return encodeBase64(encoded);
   }
 
   public decode(encoded: string): UserSignInModel {
-    const decodedString = atob(encoded);
+    const decoded = decodeBase64(encoded);
+    const decodedString = new TextDecoder().decode(decoded);
 
     const [emailAddress, password] = decodedString.split(':', 2);
 
