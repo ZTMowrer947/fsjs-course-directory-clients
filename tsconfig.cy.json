@@ -13,6 +13,6 @@
     "skipLibCheck": true,
     "lib": ["ESNext", "DOM"]
   },
-  "include": ["cypress/**/*"],
+  "include": ["cypress/**/*", "src/vite-env.d.ts"],
   "exclude": ["node_modules"]
 }
