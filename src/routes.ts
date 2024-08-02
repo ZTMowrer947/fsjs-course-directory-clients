@@ -4,14 +4,15 @@ import { createRouter } from 'vue-router';
 
 import { credentialManagerKey } from './injectKeys.ts';
 import { dummyCredentialManager } from './lib/credential.ts';
-import SignInPage from './routes/(auth)/signin/SignInPage.vue';
-import SignUpPage from './routes/(auth)/signup/SignUpPage.vue';
-import DeletePage from './routes/courses/[id]/delete/DeletePage.vue';
-import DetailPage from './routes/courses/[id]/DetailPage.vue';
-import UpdatePage from './routes/courses/[id]/update/UpdatePage.vue';
-import CreatePage from './routes/courses/create/CreatePage.vue';
-import ListPage from './routes/courses/ListPage.vue';
 import singleCourseQueryOpts from './routes/courses/queries/single.ts';
+
+const ListPage = () => import('./routes/courses/ListPage.vue');
+const CreatePage = () => import('./routes/courses/create/CreatePage.vue');
+const DetailPage = () => import('./routes/courses/[id]/DetailPage.vue');
+const UpdatePage = () => import('./routes/courses/[id]/update/UpdatePage.vue');
+const DeletePage = () => import('./routes/courses/[id]/delete/DeletePage.vue');
+const SignInPage = () => import('./routes/(auth)/signin/SignInPage.vue');
+const SignUpPage = () => import('./routes/(auth)/signup/SignUpPage.vue');
 
 type Routes = Parameters<typeof createRouter>[0]['routes'];
 
