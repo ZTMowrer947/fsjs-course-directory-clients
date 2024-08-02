@@ -10,7 +10,9 @@
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
     "noEmit": true,
+    "skipLibCheck": true,
     "lib": ["ESNext", "DOM"]
   },
-  "include": ["cypress/**/*"]
+  "include": ["cypress/**/*"],
+  "exclude": ["node_modules"]
 }

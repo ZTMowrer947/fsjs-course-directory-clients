@@ -1,5 +1,5 @@
-import type { CoursePreview, CourseUpsertModel } from '~/entities/course';
-import { ICredentialManager } from '~/lib/credential';
+import type { CoursePreview, CourseUpsertModel } from '~/entities/course.ts';
+import type { ICredentialManager } from '~/lib/credential.ts';
 
 export async function updateCourse(
   id: CoursePreview['id'],

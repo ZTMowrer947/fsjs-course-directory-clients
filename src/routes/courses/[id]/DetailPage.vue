@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { computed, inject } from 'vue';
-import { RouterLink, RouterLinkProps } from 'vue-router';
+import { RouterLink, type RouterLinkProps } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useCourseId from '~/composables/useCourseId.ts';

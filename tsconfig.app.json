@@ -16,6 +16,7 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "preserve",
+    "verbatimModuleSyntax": true,
 
     /* Linting */
     "strict": true,
@@ -27,5 +28,6 @@
       "~/*": ["./src/*"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"]
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue"],
+  "exclude": ["node_modules"]
 }

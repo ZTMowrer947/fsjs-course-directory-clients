@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { RouterLink, RouterLinkProps } from 'vue-router';
+import { RouterLink, type RouterLinkProps } from 'vue-router';
 
 import type { CoursePreview } from '~/entities/course.ts';
 
