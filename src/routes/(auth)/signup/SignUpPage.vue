@@ -100,7 +100,7 @@ import type { UserSignInModel, UserSignUpModel } from '~/entities/user.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 
-import { createUser } from '../queries.ts';
+import { createUser } from '../queries/create.ts';
 import { userKeys } from '../queryKeys.ts';
 
 type SignUpFormData = UserSignUpModel & {

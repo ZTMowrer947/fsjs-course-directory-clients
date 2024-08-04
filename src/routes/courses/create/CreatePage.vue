@@ -41,7 +41,7 @@ import type { CourseUpsertModel } from '~/entities/course.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 
-import { createCourse } from '../queries.ts';
+import { createCourse } from '../queries/create.ts';
 import courseKeys from '../queryKeys.ts';
 
 const formData = ref<CourseUpsertModel>({
