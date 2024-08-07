@@ -64,11 +64,12 @@ import { useQueryClient } from '@tanstack/vue-query';
 import { inject, ref, toValue } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
+import { AuthFailError } from '~/entities/errors.ts';
 import type { UserSignInModel } from '~/entities/user.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 
-import { getUserFromEncodedCredentials } from '../queries/byEncoded.ts';
+import { getUserFromEncodedCredentials } from '../queries/signin.ts';
 import { userKeys } from '../queryKeys.ts';
 
 type FormStatus = 'presubmit' | 'submitting' | 'authsuccess' | 'authfail' | 'error';
@@ -91,21 +92,22 @@ function handleSubmit() {
   const credentials = toValue(formData);
   const encoded = credentialManager.encode(credentials);
 
-  getUserFromEncodedCredentials(encoded)
-    .then((result) => {
-      status.value = result !== null ? 'authsuccess' : 'authfail';
+  getUserFromEncodedCredentials(encoded).match(
+    (user) => {
+      status.value = 'authsuccess';
 
-      // If successful, persist credentials and user
-      if (result !== null) {
-        credentialManager.store(credentials);
-        queryClient.setQueryData(userKeys.user, result);
-
-        router.push('/');
+      credentialManager.store(credentials);
+      queryClient.setQueryData(userKeys.user, user);
+      router.push({ name: 'course-list' });
+    },
+    (error) => {
+      if (error instanceof AuthFailError) {
+        status.value = 'authfail';
+      } else {
+        console.log(error);
+        status.value = 'error';
       }
-    })
-    .catch((err) => {
-      console.error(err);
-      status.value = 'error';
-    });
+    },
+  );
 }
 </script>
