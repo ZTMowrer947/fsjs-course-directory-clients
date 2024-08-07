@@ -2,6 +2,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import { inject } from 'vue';
 import { createRouter } from 'vue-router';
 
+import { ResponseNotOkError } from './entities/errors.ts';
 import { credentialManagerKey } from './injectKeys.ts';
 import { dummyCredentialManager } from './lib/credential.ts';
 import singleCourseQueryOpts from './routes/courses/queries/single.ts';
@@ -41,16 +42,22 @@ const routes: Routes = [
   },
   {
     path: '/courses/:id',
-    async beforeEnter(to) {
+    async beforeEnter(to, from) {
       // Fetch course data ahead of navigation
       const id = Number.parseInt(to.params.id.toString(), 10);
       const queryClient = useQueryClient();
 
-      const course = await queryClient.ensureQueryData(singleCourseQueryOpts(id));
+      const isDefaultFrom = from.matched.length === 0;
 
-      // Abort navigation if course is not found
-      if (!course) {
-        return false;
+      try {
+        await queryClient.ensureQueryData(singleCourseQueryOpts(id));
+      } catch (error) {
+        // If course fetch yields 404, cancel navigation
+        if (error instanceof ResponseNotOkError && error.response.status === 404) {
+          return isDefaultFrom ? { name: 'course-list' } : false;
+        } else {
+          throw error;
+        }
       }
     },
     children: [
