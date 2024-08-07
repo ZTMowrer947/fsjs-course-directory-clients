@@ -1,7 +1,7 @@
 <template>
   <div class="flex-1 flex flex-col">
     <PrimaryHeader
-      :user="authQuery.data.value ?? undefined"
+      :user="authQuery.isSuccess.value ? authQuery.data.value : undefined"
       :auth-pending="authQuery.isPending.value"
       @signout="signOut"
     />
@@ -27,8 +27,8 @@ const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const authQuery = useQuery(hydrateStoredUserOpts(credentialManager));
 const queryClient = useQueryClient();
 
-watch([authQuery.error, () => credentialManager.get()], ([error, credentials]) => {
-  if (error instanceof AuthFailError && credentials) {
+watch(authQuery.error, (error) => {
+  if (error instanceof AuthFailError && credentialManager.get()) {
     credentialManager.clear();
   }
 });
