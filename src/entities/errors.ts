@@ -30,3 +30,23 @@ export class ValidationError<T> extends GeneralAppError {
     this.failures = failures;
   }
 }
+
+export class FetchFailureError extends GeneralAppError {
+  public readonly inner: Error;
+  public constructor(inner: Error) {
+    super();
+    this.inner = inner;
+    this.message = 'Unexpected failure from fetch';
+    this.name = 'FetchFailureError';
+  }
+}
+
+export class ResponseNotOkError extends GeneralAppError {
+  public readonly response: Response;
+  public constructor(response: Response) {
+    super();
+    this.response = response;
+    this.message = 'Error response from server';
+    this.name = 'ResponseNotOkError';
+  }
+}
