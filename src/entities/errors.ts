@@ -50,3 +50,13 @@ export class ResponseNotOkError extends GeneralAppError {
     this.name = 'ResponseNotOkError';
   }
 }
+
+export class BodyParseError extends GeneralAppError {
+  public readonly inner: Error;
+  public constructor(inner: Error) {
+    super();
+    this.inner = inner;
+    this.message = 'Failed to parse response body';
+    this.name = 'BodyParseError';
+  }
+}

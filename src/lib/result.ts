@@ -1,6 +1,6 @@
-import { errAsync, okAsync, type Result,ResultAsync } from 'neverthrow';
+import { errAsync, okAsync, type Result, ResultAsync } from 'neverthrow';
 
-import { FetchFailureError, ResponseNotOkError, UnexpectedAppError } from '~/entities/errors';
+import { BodyParseError, FetchFailureError, ResponseNotOkError, UnexpectedAppError } from '~/entities/errors';
 
 /**
  * Either returns the successful value or throws the failure value,
@@ -29,7 +29,7 @@ export async function asyncUnwrapOrReject<T, E>(result: ResultAsync<T, E>): Prom
   return result.then(unwrapOrThrow);
 }
 
-type FetchAsResultAsyncError = UnexpectedAppError | FetchFailureError | ResponseNotOkError;
+export type FetchAsResultAsyncError = UnexpectedAppError | FetchFailureError | ResponseNotOkError;
 
 /**
  * A ResultAsync wrapper for the Fetch API. Additionally exposes a failed response
@@ -44,9 +44,9 @@ export function fetchAsResultAsync(
   return ResultAsync.fromPromise(fetch(...options), (err) => {
     // If fetch threw an error, wrap it
     if (err instanceof Error) {
-      throw new FetchFailureError(err);
+      return new FetchFailureError(err);
     } else {
-      throw new UnexpectedAppError();
+      return new UnexpectedAppError();
     }
   }).andThen((res) => {
     // If response failed, throw an error
@@ -57,3 +57,16 @@ export function fetchAsResultAsync(
     }
   });
 }
+
+/**
+ * Parses the response body as JSON and returns it (or a parse error) as an AsyncResult
+ * @param response The response to parse.
+ * @returns An AsyncResult with either the JSON data or a parsing error.
+ */
+export function jsonAsResultAsync(response: Response): ResultAsync<unknown, BodyParseError> {
+  return ResultAsync.fromPromise(response.json(), (err) => new BodyParseError(err as Error));
+}
+
+export type JsonAsResultAsyncError = BodyParseError;
+
+export type JsonRequestError = FetchAsResultAsyncError | JsonAsResultAsyncError;
