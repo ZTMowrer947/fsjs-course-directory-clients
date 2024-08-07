@@ -29,14 +29,14 @@
 <script setup lang="ts">
 import { useQuery } from '@tanstack/vue-query';
 import { computed, inject, watch } from 'vue';
-import { RouterLink, type RouterLinkProps,useRouter } from 'vue-router';
+import { RouterLink, type RouterLinkProps, useRouter } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useCourseId from '~/composables/useCourseId.ts';
 import { ResponseNotOkError } from '~/entities/errors.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
-import { authedUserQueryOpts } from '~/routes/(auth)/queries/byStored.ts';
+import { hydrateStoredUserOpts } from '~/routes/(auth)/queries/signin.ts';
 
 import singleCourseQueryOpts from '../queries/single.ts';
 import CourseDetail from './CourseDetails.vue';
@@ -50,7 +50,7 @@ const deleteTo = computed<RouteLocation>(() => ({ name: 'delete-course', params:
 
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const courseQuery = useQuery(singleCourseQueryOpts(id.value));
-const authedUserQuery = useQuery(authedUserQueryOpts(credentialManager));
+const authedUserQuery = useQuery(hydrateStoredUserOpts(credentialManager));
 
 const router = useRouter();
 watch(courseQuery.error, (currentError, prevError) => {
