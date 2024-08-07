@@ -20,3 +20,13 @@ export class UnexpectedAppError extends GeneralAppError {
     this.name = 'UnexpectedAppError';
   }
 }
+
+export class ValidationError<T> extends GeneralAppError {
+  public readonly failures: Record<keyof T, string[]>;
+  public constructor(failures: Record<keyof T, string[]>) {
+    super();
+    this.message = 'Error validating input';
+    this.name = 'ValidationError';
+    this.failures = failures;
+  }
+}
