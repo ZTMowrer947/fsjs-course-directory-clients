@@ -50,6 +50,8 @@
           id="password"
           placeholder="johnpassword"
           v-model.trim="formData.password"
+          @change="validateConfirmPassword"
+          @input="shouldShowConfirmError = false"
         />
       </div>
 
@@ -61,13 +63,18 @@
           id="confirmPassword"
           placeholder="Re-type password..."
           v-model.trim="formData.confirmPassword"
+          @change="validateConfirmPassword"
+          @input="shouldShowConfirmError = false"
         />
+
+        <div class="validation-error text-red-700 mt-1" v-if="shouldShowConfirmError">Passwords do not match.</div>
       </div>
 
       <div class="flex w-full justify-evenly mt-10">
         <button
-          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 disabled:bg-indigo-700 transition-colors text-white rounded-lg flex-1 me-2 p-2"
+          class="border-2 border-indigo-500 bg-indigo-500 hover:bg-indigo-700 hover:border-indigo-700 disabled:bg-gray-700 disabled:border-gray-700 transition-colors text-white rounded-lg flex-1 me-2 p-2"
           type="submit"
+          :disabled="!passwordConfirmed"
         >
           Sign Up
         </button>
@@ -93,7 +100,7 @@
 <script setup lang="ts">
 /* eslint @typescript-eslint/no-unused-vars: ['error', { ignoreRestSiblings: true }] */
 import { useMutation, useQueryClient } from '@tanstack/vue-query';
-import { inject, ref, toValue } from 'vue';
+import { computed, inject, ref, toValue } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
 import type { UserSignInModel, UserSignUpModel } from '~/entities/user.ts';
@@ -115,6 +122,8 @@ const formData = ref<SignUpFormData>({
   confirmPassword: '',
 });
 
+const passwordConfirmed = computed(() => formData.value.password === formData.value.confirmPassword);
+const shouldShowConfirmError = ref(false);
 const router = useRouter();
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const queryClient = useQueryClient();
@@ -137,6 +146,12 @@ const { mutate } = useMutation({
     router.push({ name: 'course-list' });
   },
 });
+
+function validateConfirmPassword() {
+  if (!passwordConfirmed.value) {
+    shouldShowConfirmError.value = true;
+  }
+}
 
 function handleSubmit() {
   const { confirmPassword, ...userData } = toValue(formData);
