@@ -5,10 +5,11 @@ import { createApp, inject } from 'vue';
 import { createRouter, createWebHistory } from 'vue-router';
 
 import App from './App.vue';
+import { AuthFailError } from './entities/errors.ts';
 import { credentialManagerKey } from './injectKeys.ts';
 import { CookieCredentialManager, dummyCredentialManager } from './lib/credential.ts';
 import routes from './routes.ts';
-import { authedUserQueryOpts } from './routes/(auth)/queries/byStored.ts';
+import { hydrateStoredUserOpts } from './routes/(auth)/queries/signin.ts';
 
 const router = createRouter({
   history: createWebHistory(),
@@ -27,10 +28,14 @@ router.beforeEach(async (to) => {
   // If the incoming navigation requires authentication,
   if (to.meta.requiresAuth) {
     // Ensure user exists before proceeding, otherwise redirect to user signin
-    const user = await queryClient.ensureQueryData(authedUserQueryOpts(credentialManager));
-
-    if (!user) {
-      return { name: 'signin' };
+    try {
+      await queryClient.ensureQueryData(hydrateStoredUserOpts(credentialManager));
+    } catch (error) {
+      if (error instanceof AuthFailError) {
+        return { name: 'signin' };
+      } else {
+        throw error;
+      }
     }
   }
 });
