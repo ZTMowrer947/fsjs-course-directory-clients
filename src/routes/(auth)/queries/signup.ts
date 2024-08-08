@@ -15,21 +15,19 @@ export function signUp(data: UserSignUpModel): ResultAsync<User, SignUpError> {
     body: JSON.stringify(data),
   });
 
-  return (
-    fetchAsResultAsync(req)
-      .andThen(jsonAsResultAsync)
-      .mapErr(async (error) => {
-        // Extract validation errors for 400 errors
-        if (error instanceof ResponseNotOkError && error.response.status === 400) {
-          const errBody = await error.response.json();
+  return fetchAsResultAsync(req)
+    .andThen(jsonAsResultAsync)
+    .mapErr(async (error) => {
+      // Extract validation errors for 400 errors
+      if (!(error instanceof ResponseNotOkError)) {
+        return error;
+      } else if (error.response.status === 400) {
+        const errBody = await error.response.json().catch((err) => new UnexpectedAppError(err));
 
-          return new ValidationError(errBody.data.errors);
-        } else {
-          return error;
-        }
-      })
-      // Wrap other errors
-      .mapErr((e) => (e instanceof ValidationError || e instanceof UnexpectedAppError ? e : new UnexpectedAppError(e)))
-      .map((user) => user as User)
-  );
+        return new ValidationError(errBody.data.errors);
+      } else {
+        return new UnexpectedAppError(error);
+      }
+    })
+    .map((user) => user as User);
 }

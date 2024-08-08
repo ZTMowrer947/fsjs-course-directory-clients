@@ -26,19 +26,11 @@ export function createCourse(
       if (!(error instanceof ResponseNotOkError)) {
         return error;
       } else if (error.response.status === 400) {
-        const errorBody = await error.response.json();
+        const errorBody = await error.response.json().catch((err) => new UnexpectedAppError(err));
 
         return new ValidationError(errorBody.data.errors);
       } else if (error.response.status === 401) {
         return new AuthFailError();
-      } else {
-        return error;
-      }
-    })
-    .mapErr((error) => {
-      // Wrap errors not handled in previous mapErr
-      if (error instanceof UnexpectedAppError || error instanceof AuthFailError || error instanceof ValidationError) {
-        return error;
       } else {
         return new UnexpectedAppError(error);
       }

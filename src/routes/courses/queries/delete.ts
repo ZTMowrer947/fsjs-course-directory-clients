@@ -43,7 +43,7 @@ export function deleteCourse(id: CourseDetail['id'], encodedCredentials: string)
     .map(() => {})
     .mapErr((error) => {
       if (!(error instanceof ResponseNotOkError)) {
-        return new UnexpectedAppError(error);
+        return error;
       } else if (error.response.status === 401 || error.response.status === 403) {
         return new AuthFailError();
       } else if (error.response.status === 404) {

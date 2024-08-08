@@ -16,10 +16,12 @@ export function getSingleCourse(id: CourseDetail['id']): ResultAsync<CourseDetai
     .andThen(jsonAsResultAsync)
     .mapErr((error) => {
       // Handle 404 as distinct error
-      if (error instanceof ResponseNotOkError && error.response.status === 404) {
+      if (!(error instanceof ResponseNotOkError)) {
+        return error;
+      } else if (error.response.status === 404) {
         return new CourseNotFoundError(id);
       } else {
-        return error instanceof UnexpectedAppError ? error : new UnexpectedAppError(error);
+        return new UnexpectedAppError(error);
       }
     })
     .map((data) => data as CourseDetail);
