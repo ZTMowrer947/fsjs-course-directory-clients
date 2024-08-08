@@ -1,6 +1,6 @@
 import { errAsync, okAsync, type Result, ResultAsync } from 'neverthrow';
 
-import { BodyParseError, FetchFailureError, ResponseNotOkError, UnexpectedAppError } from '~/entities/errors';
+import { ResponseNotOkError, UnexpectedAppError } from '~/entities/errors';
 
 /**
  * Either returns the successful value or throws the failure value,
@@ -29,7 +29,7 @@ export async function asyncUnwrapOrReject<T, E>(result: ResultAsync<T, E>): Prom
   return result.then(unwrapOrThrow);
 }
 
-export type FetchAsResultAsyncError = UnexpectedAppError | FetchFailureError | ResponseNotOkError;
+export type FetchError = UnexpectedAppError | ResponseNotOkError;
 
 /**
  * A ResultAsync wrapper for the Fetch API. Additionally exposes a failed response
@@ -38,16 +38,10 @@ export type FetchAsResultAsyncError = UnexpectedAppError | FetchFailureError | R
  * @returns A ResultAsync with the fetch Response as the Ok type and
  * a fetch-related error as the Error type.
  */
-export function fetchAsResultAsync(
-  ...options: Parameters<typeof fetch>
-): ResultAsync<Response, FetchAsResultAsyncError> {
+export function fetchAsResultAsync(...options: Parameters<typeof fetch>): ResultAsync<Response, FetchError> {
   return ResultAsync.fromPromise(fetch(...options), (err) => {
     // If fetch threw an error, wrap it
-    if (err instanceof Error) {
-      return new FetchFailureError(err);
-    } else {
-      return new UnexpectedAppError();
-    }
+    return new UnexpectedAppError(err as Error);
   }).andThen((res) => {
     // If response failed, throw an error
     if (!res.ok) {
@@ -63,10 +57,6 @@ export function fetchAsResultAsync(
  * @param response The response to parse.
  * @returns An AsyncResult with either the JSON data or a parsing error.
  */
-export function jsonAsResultAsync(response: Response): ResultAsync<unknown, BodyParseError> {
-  return ResultAsync.fromPromise(response.json(), (err) => new BodyParseError(err as Error));
+export function jsonAsResultAsync(response: Response): ResultAsync<unknown, UnexpectedAppError> {
+  return ResultAsync.fromPromise(response.json(), (err) => new UnexpectedAppError(err as Error));
 }
-
-export type JsonAsResultAsyncError = BodyParseError;
-
-export type JsonRequestError = FetchAsResultAsyncError | JsonAsResultAsyncError;

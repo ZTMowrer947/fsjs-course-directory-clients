@@ -3,11 +3,11 @@ import type { ResultAsync } from 'neverthrow';
 
 import type { CourseDetail } from '~/entities/course.ts';
 import { ResponseNotOkError } from '~/entities/errors.ts';
-import { asyncUnwrapOrReject, fetchAsResultAsync, jsonAsResultAsync, type JsonRequestError } from '~/lib/result.ts';
+import { asyncUnwrapOrReject, fetchAsResultAsync, type FetchError,jsonAsResultAsync } from '~/lib/result.ts';
 
 import courseKeys from '../queryKeys.ts';
 
-export function getSingleCourse(id: CourseDetail['id']): ResultAsync<CourseDetail, JsonRequestError> {
+export function getSingleCourse(id: CourseDetail['id']): ResultAsync<CourseDetail, FetchError> {
   const url = `http://localhost:5000/api/courses/${encodeURIComponent(id)}`;
 
   return fetchAsResultAsync(url)
@@ -27,5 +27,5 @@ export default function singleCourseQueryOpts(id: CourseDetail['id']) {
       // Do not retry after a 404, otherwise retry up to three times
       return !(error instanceof ResponseNotOkError && error.response.status === 404) && failCount < 3;
     },
-  } satisfies QueryOptions<CourseDetail, JsonRequestError>;
+  } satisfies QueryOptions<CourseDetail, FetchError>;
 }
