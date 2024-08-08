@@ -103,11 +103,12 @@ import { useMutation, useQueryClient } from '@tanstack/vue-query';
 import { computed, inject, ref, toValue } from 'vue';
 import { RouterLink, useRouter } from 'vue-router';
 
-import type { UserSignInModel, UserSignUpModel } from '~/entities/user.ts';
+import type { User, UserSignInModel, UserSignUpModel } from '~/entities/user.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
+import { asyncUnwrapOrReject } from '~/lib/result.ts';
 
-import { createUser } from '../queries/create.ts';
+import { signUp, type SignUpError } from '../queries/signup.ts';
 import { userKeys } from '../queryKeys.ts';
 
 type SignUpFormData = UserSignUpModel & {
@@ -127,20 +128,23 @@ const shouldShowConfirmError = ref(false);
 const router = useRouter();
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const queryClient = useQueryClient();
-const { mutate } = useMutation({
-  mutationFn: createUser,
-  onSuccess(data) {
-    // Grab password from input
-    const { password } = toValue(formData);
-
-    const credentials = {
-      emailAddress: data.emailAddress,
-      password,
-    } satisfies UserSignInModel;
-
+const { mutate } = useMutation<User, SignUpError, UserSignUpModel, { credentials: UserSignInModel }>({
+  mutationFn(data) {
+    return asyncUnwrapOrReject(signUp(data));
+  },
+  onMutate(data) {
+    // Extract credentials for persisting if creation succeeds
+    return {
+      credentials: {
+        emailAddress: data.emailAddress,
+        password: data.password,
+      },
+    };
+  },
+  onSuccess(user, _data, context) {
     // Store credentials and user data
-    credentialManager.store(credentials);
-    queryClient.setQueryData(userKeys.user, data);
+    credentialManager.store(context.credentials);
+    queryClient.setQueryData(userKeys.user, user);
 
     // Redirect to home page
     router.push({ name: 'course-list' });
