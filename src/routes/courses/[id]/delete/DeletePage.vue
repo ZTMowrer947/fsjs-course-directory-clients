@@ -44,9 +44,10 @@ import { RouterLink, useRouter } from 'vue-router';
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useCourseId from '~/composables/useCourseId.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
-import { dummyCredentialManager } from '~/lib/credential.ts';
+import { dummyCredentialManager, encodeStoredCredentials } from '~/lib/credential.ts';
+import { asyncUnwrapOrReject } from '~/lib/result.ts';
 
-import { deleteCourse } from '../../queries/delete.ts';
+import { deleteCourse, type DeleteCourseError } from '../../queries/delete.ts';
 import singleCourseQueryOpts from '../../queries/single.ts';
 import courseKeys from '../../queryKeys.ts';
 
@@ -57,9 +58,15 @@ const courseQuery = useQuery(singleCourseQueryOpts(id.value));
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const queryClient = useQueryClient();
 const router = useRouter();
-const deleteMutation = useMutation({
-  mutationFn: () => deleteCourse(id.value, credentialManager),
-  onSuccess: () => {
+const deleteMutation = useMutation<void, DeleteCourseError, void>({
+  mutationFn() {
+    const deleteResult = encodeStoredCredentials(credentialManager).asyncAndThen((encoded) =>
+      deleteCourse(id.value, encoded),
+    );
+
+    return asyncUnwrapOrReject(deleteResult);
+  },
+  onSuccess() {
     // Clear query data for delete course, redirect to listing
     queryClient.invalidateQueries({
       queryKey: courseKeys.byId(id.value),

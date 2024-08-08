@@ -1,6 +1,8 @@
 import { decodeBase64, encodeBase64 } from '@std/encoding/base64';
 import Cookies from 'js-cookie';
+import { err, ok, type Result } from 'neverthrow';
 
+import { AuthFailError } from '~/entities/errors';
 import type { UserSignInModel } from '~/entities/user.ts';
 
 /**
@@ -100,3 +102,13 @@ export const dummyCredentialManager: ICredentialManager = {
   store: unimplemented,
   clear: unimplemented,
 };
+
+export function encodeStoredCredentials(credentialManager: ICredentialManager): Result<string, AuthFailError> {
+  const credentials = credentialManager.get();
+
+  if (credentials) {
+    return ok(credentialManager.encode(credentials));
+  } else {
+    return err(new AuthFailError());
+  }
+}
