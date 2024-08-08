@@ -13,9 +13,12 @@ export class AuthFailError extends GeneralAppError {
   }
 }
 
-export class UnexpectedAppError extends GeneralAppError {
-  public constructor() {
+export class UnexpectedAppError<E extends Error = Error> extends GeneralAppError {
+  public readonly inner?: E;
+
+  public constructor(inner?: E) {
     super();
+    this.inner = inner;
     this.message = 'Unexpected error';
     this.name = 'UnexpectedAppError';
   }
