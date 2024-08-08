@@ -37,11 +37,13 @@ import { RouterLink, useRouter } from 'vue-router';
 
 import CourseUpsertForm from '~/components/CourseUpsertForm.vue';
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
-import type { CourseUpsertModel } from '~/entities/course.ts';
+import type { CourseDetail, CourseUpsertModel } from '~/entities/course.ts';
+import { AuthFailError } from '~/entities/errors.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
+import { asyncUnwrapOrReject } from '~/lib/result.ts';
 
-import { createCourse } from '../queries/create.ts';
+import { type CourseCreateError,createCourse } from '../queries/create.ts';
 import courseKeys from '../queryKeys.ts';
 
 const formData = ref<CourseUpsertModel>({
@@ -54,12 +56,17 @@ const formData = ref<CourseUpsertModel>({
 const router = useRouter();
 const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 const queryClient = useQueryClient();
-const { mutate, isPending } = useMutation({
-  mutationFn(data: CourseUpsertModel) {
-    // Grab current credentials
-    const encodedCredentials = credentialManager.encode(credentialManager.get()!);
+const { mutate, isPending } = useMutation<CourseDetail, CourseCreateError, CourseUpsertModel>({
+  async mutationFn(data: CourseUpsertModel) {
+    // Grab current credentials, throwing if none are present
+    const credentials = credentialManager.get();
 
-    return createCourse(encodedCredentials, data);
+    if (!credentials) throw new AuthFailError();
+
+    // Pass credentuals to course creation, along with course data from form
+    const encodedCredentials = credentialManager.encode(credentials);
+
+    return asyncUnwrapOrReject(createCourse(encodedCredentials, data));
   },
   onSuccess(courseDetail) {
     // Store data for new course, invalidate query for whole list

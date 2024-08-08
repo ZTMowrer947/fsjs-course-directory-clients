@@ -1,7 +1,16 @@
-import type { CourseDetail, CourseUpsertModel } from '~/entities/course.ts';
+import type { ResultAsync } from 'neverthrow';
 
-export async function createCourse(encodedCredentials: string, courseData: CourseUpsertModel): Promise<CourseDetail> {
-  const res = await fetch('http://localhost:5000/api/courses', {
+import type { CourseDetail, CourseUpsertModel } from '~/entities/course.ts';
+import { AuthFailError, ResponseNotOkError, UnexpectedAppError, ValidationError } from '~/entities/errors.ts';
+import { fetchAsResultAsync, jsonAsResultAsync } from '~/lib/result.ts';
+
+export type CourseCreateError = AuthFailError | ValidationError<CourseUpsertModel> | UnexpectedAppError;
+
+export function createCourse(
+  encodedCredentials: string,
+  courseData: CourseUpsertModel,
+): ResultAsync<CourseDetail, CourseCreateError> {
+  const req = new Request('http://localhost:5000/api/courses', {
     method: 'POST',
     headers: {
       Authorization: `Basic ${encodedCredentials}`,
@@ -10,12 +19,29 @@ export async function createCourse(encodedCredentials: string, courseData: Cours
     body: JSON.stringify(courseData),
   });
 
-  if (res.ok) {
-    return res.json();
-  } else if (res.status === 400) {
-    // TODO: Handle more properly
-    throw new Error('Validation error');
-  } else {
-    throw new Error('Unexpected error while creating user');
-  }
+  return fetchAsResultAsync(req)
+    .andThen(jsonAsResultAsync)
+    .mapErr(async (error) => {
+      // Handle 400's and 401's, leaving other errors unchanged
+      if (!(error instanceof ResponseNotOkError)) {
+        return error;
+      } else if (error.response.status === 400) {
+        const errorBody = await error.response.json();
+
+        return new ValidationError(errorBody.data.errors);
+      } else if (error.response.status === 401) {
+        return new AuthFailError();
+      } else {
+        return error;
+      }
+    })
+    .mapErr((error) => {
+      // Wrap errors not handled in previous mapErr
+      if (error instanceof UnexpectedAppError || error instanceof AuthFailError || error instanceof ValidationError) {
+        return error;
+      } else {
+        return new UnexpectedAppError(error);
+      }
+    })
+    .map((course) => course as CourseDetail);
 }
