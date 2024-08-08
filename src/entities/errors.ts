@@ -1,3 +1,5 @@
+import type { CoursePreview } from './course.ts';
+
 export class GeneralAppError extends Error {
   public constructor() {
     super('An app-specific error occurred');
@@ -34,13 +36,11 @@ export class ValidationError<T> extends GeneralAppError {
   }
 }
 
-export class FetchFailureError extends GeneralAppError {
-  public readonly inner: Error;
-  public constructor(inner: Error) {
+export class CourseNotFoundError extends GeneralAppError {
+  public constructor(id: CoursePreview['id']) {
     super();
-    this.inner = inner;
-    this.message = 'Unexpected failure from fetch';
-    this.name = 'FetchFailureError';
+    this.message = `No course found with id '${id}'`;
+    this.name = 'CourseNotFoundError';
   }
 }
 
@@ -51,15 +51,5 @@ export class ResponseNotOkError extends GeneralAppError {
     this.response = response;
     this.message = 'Error response from server';
     this.name = 'ResponseNotOkError';
-  }
-}
-
-export class BodyParseError extends GeneralAppError {
-  public readonly inner: Error;
-  public constructor(inner: Error) {
-    super();
-    this.inner = inner;
-    this.message = 'Failed to parse response body';
-    this.name = 'BodyParseError';
   }
 }
