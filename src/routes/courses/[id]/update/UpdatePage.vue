@@ -40,10 +40,11 @@ import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useCourseId from '~/composables/useCourseId.ts';
 import type { CourseUpsertModel } from '~/entities/course.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
-import { dummyCredentialManager } from '~/lib/credential.ts';
+import { dummyCredentialManager, encodeStoredCredentials } from '~/lib/credential.ts';
+import { asyncUnwrapOrReject } from '~/lib/result.ts';
 
 import singleCourseQueryOpts from '../../queries/single.ts';
-import { updateCourse } from '../../queries/update.ts';
+import { type CourseUpdateError,updateCourse } from '../../queries/update.ts';
 import courseKeys from '../../queryKeys.ts';
 
 const id = useCourseId();
@@ -52,9 +53,13 @@ const credentialManager = inject(credentialManagerKey, dummyCredentialManager);
 
 const router = useRouter();
 const queryClient = useQueryClient();
-const updateMutation = useMutation({
-  mutationFn: (updateData: CourseUpsertModel) => {
-    return updateCourse(id.value, updateData, credentialManager);
+const updateMutation = useMutation<void, CourseUpdateError, CourseUpsertModel>({
+  mutationFn(updateData) {
+    const updateResult = encodeStoredCredentials(credentialManager).asyncAndThen((encoded) =>
+      updateCourse(id.value, updateData, encoded),
+    );
+
+    return asyncUnwrapOrReject(updateResult);
   },
   onSuccess() {
     queryClient.invalidateQueries({
