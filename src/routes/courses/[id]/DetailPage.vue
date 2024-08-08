@@ -33,7 +33,7 @@ import { RouterLink, type RouterLinkProps, useRouter } from 'vue-router';
 
 import PrimaryLayout from '~/components/PrimaryLayout.vue';
 import useCourseId from '~/composables/useCourseId.ts';
-import { ResponseNotOkError } from '~/entities/errors.ts';
+import { CourseNotFoundError } from '~/entities/errors.ts';
 import { credentialManagerKey } from '~/injectKeys.ts';
 import { dummyCredentialManager } from '~/lib/credential.ts';
 import { hydrateStoredUserOpts } from '~/routes/(auth)/queries/signin.ts';
@@ -55,7 +55,7 @@ const authedUserQuery = useQuery(hydrateStoredUserOpts(credentialManager));
 const router = useRouter();
 watch(courseQuery.error, (currentError, prevError) => {
   // If course fetch results in a 404, redirect to course list
-  if (!prevError && currentError instanceof ResponseNotOkError && currentError.response.status === 404) {
+  if (!prevError && currentError instanceof CourseNotFoundError) {
     router.push({ name: 'course-list' });
   }
 });

@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/vue-query';
 import { inject } from 'vue';
 import { createRouter } from 'vue-router';
 
-import { ResponseNotOkError } from './entities/errors.ts';
+import { CourseNotFoundError } from './entities/errors.ts';
 import { credentialManagerKey } from './injectKeys.ts';
 import { dummyCredentialManager } from './lib/credential.ts';
 import singleCourseQueryOpts from './routes/courses/queries/single.ts';
@@ -52,10 +52,11 @@ const routes: Routes = [
       try {
         await queryClient.ensureQueryData(singleCourseQueryOpts(id));
       } catch (error) {
-        // If course fetch yields 404, cancel navigation
-        if (error instanceof ResponseNotOkError && error.response.status === 404) {
+        // If course is not found, cancel navigation
+        if (error instanceof CourseNotFoundError) {
           return isDefaultFrom ? { name: 'course-list' } : false;
         } else {
+          // Throw on any other error
           throw error;
         }
       }
